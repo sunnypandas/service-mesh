@@ -1,0 +1,49 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: accountinfo-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: accountinfo
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - accountinfo-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /api/order
+      route:
+        - destination:
+            host: orderdetail
+            port:
+              number: 80
+    - match:
+        - uri:
+            exact: /api/list
+      route:
+        - destination:
+            host: orderlist
+            port:
+              number: 80
+    - match:
+        - uri:
+            exact: /api/account
+      route:
+        - destination:
+            host: accountinfo
+            port:
+              number: 80

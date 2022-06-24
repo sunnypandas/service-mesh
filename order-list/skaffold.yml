@@ -1,0 +1,12 @@
+apiVersion: skaffold/v1
+kind: Config
+build:
+  artifacts:
+    - image: docker.io/sunnypandas/orderlist
+      context: ../order-list
+      jib: {}
+  tagPolicy:
+    envTemplate:
+      template: '{{.IMAGE_NAME}}:latest'
+deploy:
+  kustomize: {}

@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: accountinfo-virtualservice
+  namespace: default
+spec:
+  hosts:
+    - accountinfo
+  http:
+    - route:
+        - destination:
+            host: accountinfo
+            subset: 'v1'
+          weight: 100
+      retries:
+        attempts: 3
+        perTryTimeout: 2s
